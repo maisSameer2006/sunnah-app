@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق السنن المهجورة</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        purpleBg: '#581C87',
+                        purpleHeader: '#4C1D95',
+                        purpleText: '#581C87',
+                        purpleBtn: '#7E22CE',
+                        purpleHover: '#6B21A8'
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #4c1d95 0%, #6b21a8 50%, #581c87 100%);
+            min-height: 100vh;
+        }
+        
+        .card-shadow {
+            box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.35), 0 10px 15px -6px rgba(0, 0, 0, 0.2);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .toast-animate {
+            animation: toastPop 0.3s ease-out forwards;
+        }
+
+        @keyframes toastPop {
+            0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Custom scrollbar for tab navigation on small screens */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(251, 191, 36, 0.5);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-between p-4 min-h-screen text-slate-800 antialiased selection:bg-amber-400 selection:text-purple-950">
+
+    <!-- Navbar / App Brand -->
+    <header class="w-full max-w-3xl my-4 text-center">
+        <div class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-purple-900/60 text-purple-100 text-sm sm:text-base font-bold shadow-xl backdrop-blur-md border border-purple-400/30">
+            <i class="fa-solid fa-star text-amber-400 text-lg animate-pulse"></i>
+            <span>مبادرة إحياء السُّنّة النبوية الشريفة</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto flex flex-col items-center my-auto py-2">
+
+        <!-- Tabs Box (1 to 20 Numbers Grid) -->
+        <div class="w-full bg-white/10 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-white/20 mb-6 shadow-2xl">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <span class="text-white text-xs sm:text-sm font-bold flex items-center gap-1.5">
+                    <i class="fa-solid fa-hand-pointer text-amber-300"></i>
+                    اختر رقم السنة (1 - 20):
+                </span>
+                <span id="sunnahCounterBadge" class="text-xs bg-amber-400/20 text-amber-300 font-bold px-2.5 py-0.5 rounded-full border border-amber-400/30">
+                    1 / 20
+                </span>
+            </div>
+            
+            <!-- Grid 5 to 10 columns responsive layout -->
+            <div id="tabsContainer" class="grid grid-cols-5 sm:grid-cols-10 gap-2 sm:gap-2.5 custom-scrollbar">
+                <!-- Numbers 1 to 20 will be dynamically rendered via JS -->
+            </div>
+        </div>
+
+        <!-- Main Card Output -->
+        <div id="sunnahCard" class="w-full bg-white rounded-3xl overflow-hidden card-shadow border border-purple-200/50 fade-in transition-all">
+            <!-- Header Banner -->
+            <div class="bg-gradient-to-r from-purpleHeader via-purple-800 to-purpleHeader text-white py-4 px-6 text-center shadow-md flex items-center justify-between border-b border-purple-400/20">
+                <span id="sunnahNumberBadge" class="bg-amber-400 text-purple-950 font-extrabold text-xs sm:text-sm px-3 py-1 rounded-full shadow-inner flex items-center gap-1">
+                    <i class="fa-solid fa-bookmark"></i>
+                    سُنة رقم 1
+                </span>
+                <h1 class="text-xl sm:text-2xl font-black tracking-wide">السنن المهجورة</h1>
+                <div class="w-16 text-left">
+                    <span class="text-amber-300/80 text-xs font-semibold">مضمونة</span>
+                </div>
+            </div>
+            
+            <!-- Card Body Display Area -->
+            <div class="bg-white p-6 sm:p-12 min-h-[220px] sm:min-h-[250px] flex items-center justify-center text-center relative">
+                <!-- Decorative Quotes Background -->
+                <i class="fa-solid fa-quote-right absolute top-4 right-6 text-purple-100 text-4xl sm:text-6xl pointer-events-none"></i>
+                <i class="fa-solid fa-quote-left absolute bottom-4 left-6 text-purple-100 text-4xl sm:text-6xl pointer-events-none"></i>
+
+                <p id="sunnahText" class="text-purpleText text-lg sm:text-2xl font-bold leading-relaxed sm:leading-loose relative z-10">
+                    <!-- Text inserted via JS -->
+                </p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 flex flex-wrap gap-3 sm:gap-4 justify-center w-full">
+            <!-- Random Sunnah Button -->
+            <button onclick="displayRandomSunnah()" class="flex-1 min-w-[170px] bg-gradient-to-r from-purpleBtn to-purpleHover hover:from-purpleHover hover:to-purple-900 text-white font-bold py-3.5 px-6 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-200 active:scale-95 flex items-center justify-center gap-2.5 text-base border border-purple-400/30">
+                <i class="fa-solid fa-shuffle text-amber-300 text-lg"></i>
+                <span>سُنة عشوائية</span>
+            </button>
+
+            <!-- Copy Button -->
+            <button onclick="copyCurrentSunnah()" class="bg-white hover:bg-purple-50 text-purpleText border-2 border-purple-200 font-bold py-3.5 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 flex items-center justify-center gap-2.5 text-base">
+                <i class="fa-regular fa-copy text-purpleBtn text-lg"></i>
+                <span>نسخ النص</span>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-6 text-purple-200/80 text-xs sm:text-sm font-semibold text-center">
+        <p>«مَنْ أَحْيَا سُنَّةً مِنْ سُنَّتِي فَعَمِلَ بِهَا النَّاسُ كَانَ لَهُ مِثْلُ أَجْرِ مَنْ عَمِلَ بِهَا»</p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-900/95 backdrop-blur-md text-white px-6 py-3.5 rounded-2xl shadow-2xl text-sm font-bold hidden items-center gap-3 z-50 border border-purple-500/40">
+        <i class="fa-solid fa-circle-check text-green-400 text-xl"></i>
+        <span>تم نسخ نص السنة بنجاح!</span>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // List of all 20 authentic Sunnahs
+        const sunnahList = [
+            { id: 1, text: "التنعل باليمين والخلع بالشمال: البداية بالرجل اليمنى عند لبس الحذاء، وباليسرى عند خلعه." },
+            { id: 2, text: "الوضوء قبل النوم: النوم على طهارة مع الاستلقاء على الشق الأيمن ووضع الكف الأيمن تحت الخد." },
+            { id: 3, text: "صلاة الركعتين بعد التراويح أو بعد الوتر جالسًا: أو صلاة ركعتين في المنزل بعد العودة من المسجد." },
+            { id: 4, text: "تحنيك المولود: تمسيد حنك المولود بتمرة مضغوطة عند ولادته." },
+            { id: 5, text: "الشرب جالسًا وعلى ثلاث دفعات: عدم الشرب دفعة واحدة أو قائمًا إلا لحاجة، مع التقاط النفس بين كل جرعة وأخرى." },
+            { id: 6, text: "أكل اللقمة الساقطة: مسح ما يعلق باللقمة إذا سقطت على الأرض وأكلها وعدم تركها للشيطان." },
+            { id: 7, text: "صلاة الضحى: صلاة ركعتين إلى ثماني ركعات من بعد شروق الشمس بـ 15-20 دقيقة إلى قبل أذان الظهر." },
+            { id: 8, text: "النفث والمُعَوِّذات عند النوم: جمع الكفين والنفث فيهما وقراءة السور الثلاث (الإخلاص، الفلق، الناس) ومسح الجسد." },
+            { id: 9, text: "السواك عند دخول البيت وعند الاستيقاظ: كثرة استخدام السواك لمحي الفم وطهارة للسان." },
+            { id: 10, text: "السلام على الصبيان: إلقاء السلام على الأطفال لتربيتهم وإشعارهم بالاحترام." },
+            { id: 11, text: "الصلاة بالنعلين: يُسن الصلاة بالحذاء إذا كان طاهراً ومكانه مخصصاً لذلك." },
+            { id: 12, text: "الدعاء بعد أذان الفجر وركعتي الفجر: الاضطجاع على الشق الأيمن برهة خفيفة بعد سنة الفجر وقبل الإقامة." },
+            { id: 13, text: "إصلاح النعل ورقع الثوب بنفسه: من باب التواضع والاعتماد على النفس كما كان يفعل النبي ﷺ في بيته." },
+            { id: 14, text: "نفث السرير قبل النوم: نفض الفراش بطرف الثوب ثلاث مرات وتسمية الله قبل النوم." },
+            { id: 15, text: "مسح أثر النوم عن الوجه باليد: عند الاستيقاظ مباشرة وقبل غسل الوجه." },
+            { id: 16, text: "المضمضة والاستنشاق بكف واحدة: غرف الماء بكف واحدة للمضمضة والاستنشاق معاً." },
+            { id: 17, text: "إفشاء السلام على من عرفت ومن لم تعرف: إلقاء السلام على الجميع." },
+            { id: 18, text: "عيادة المريض ومواساته: زيارة المريض والدعاء له بـ 'لا بأس طهور إن شاء الله'." },
+            { id: 19, text: "التبسم في وجه الآخرين: جعل البشاشة والتبسم صدقة يومية مستمرة." },
+            { id: 20, text: "صلاة ركعتين بعد الوضوء: إسباغ الوضوء ثم صلاة ركعتين خفيفتين." }
+        ];
+
+        let currentIndex = 0;
+
+        // Render tab buttons from 1 to 20
+        function renderTabs() {
+            const container = document.getElementById('tabsContainer');
+            container.innerHTML = '';
+
+            sunnahList.forEach((item, index) => {
+                const btn = document.createElement('button');
+                btn.id = `tab-btn-${index}`;
+                btn.textContent = item.id;
+                btn.onclick = () => selectSunnah(index);
+                
+                // Styling active vs inactive buttons
+                if (index === currentIndex) {
+                    btn.className = 'py-2.5 sm:py-3 rounded-xl font-extrabold text-base sm:text-lg transition-all duration-200 bg-amber-400 text-purple-950 shadow-lg scale-105 border-2 border-white ring-2 ring-amber-300/50';
+                } else {
+                    btn.className = 'py-2.5 sm:py-3 rounded-xl font-bold text-sm sm:text-base transition-all duration-200 bg-purple-900/50 hover:bg-purple-700/70 text-purple-100 border border-purple-400/20 hover:scale-105';
+                }
+                
+                container.appendChild(btn);
+            });
+        }
+
+        // Select specific Sunnah index
+        function selectSunnah(index) {
+            currentIndex = index;
+            const sunnah = sunnahList[index];
+
+            const cardElement = document.getElementById('sunnahCard');
+            const textElement = document.getElementById('sunnahText');
+            const badgeElement = document.getElementById('sunnahNumberBadge');
+            const counterElement = document.getElementById('sunnahCounterBadge');
+
+            // Card animation trigger
+            cardElement.classList.remove('fade-in');
+            void cardElement.offsetWidth; // Force reflow
+            cardElement.classList.add('fade-in');
+
+            // Render Text Content
+            textElement.textContent = sunnah.text;
+            badgeElement.innerHTML = `<i class="fa-solid fa-bookmark"></i> سُنة رقم ${sunnah.id}`;
+            counterElement.textContent = `${sunnah.id} / ${sunnahList.length}`;
+
+            // Re-render tab buttons state
+            renderTabs();
+        }
+
+        // Pick a random Sunnah
+        function displayRandomSunnah() {
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * sunnahList.length);
+            } while (newIndex === currentIndex && sunnahList.length > 1);
+
+            selectSunnah(newIndex);
+        }
+
+        // Copy active Sunnah text to clipboard
+        function copyCurrentSunnah() {
+            const textToCopy = document.getElementById('sunnahText').textContent;
+            
+            // Clipboard fallback mechanism
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast();
+            } catch (err) {
+                console.error('فشل في نسخ النص', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Display Toast Notification
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('hidden');
+            toast.classList.add('flex', 'toast-animate');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex', 'toast-animate');
+            }, 2600);
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            renderTabs();
+            selectSunnah(0);
+        };
+    </script>
+</body>
+</html>
